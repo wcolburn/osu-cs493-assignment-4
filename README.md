@@ -1,8 +1,5 @@
 # Assignment 4
 
-**Assignment due at 11:59pm on Tuesday 5/31/2022**<br/>
-**Demo due by 5:00pm on Friday 6/10/2022**
-
 The goal of this assignment is to incorporate file storage into our API and to start using RabbitMQ to perform some basic offline data enrichment.  There are a few parts to this assignment, described below.
 
 You are provided some starter code in this repository that uses MongoDB as a backing to implement a reduced subset of the businesses API we've been working with all term.  The starter code contains the following components:
@@ -75,10 +72,6 @@ Your final task in the assignment is to add an offline data enrichment process t
     ```
 
 When your consumer is working correctly, you should be able to launch one or more instances of the consumer running alongside your API server, the RabbitMQ daemon, and the MongoDB server, and you should be able to see the consumers processing photos as they're uploaded.  Note that only the RabbitMQ daemon and the MongoDB server need to be run within Docker containers.  The API server and RabbitMQ consumer(s) can run either in Docker or directly on your host machine.
-
-## Submission
-
-We'll be using GitHub Classroom for this assignment, and you will submit your assignment via GitHub.  Just make sure your completed files are committed and pushed by the assignment's deadline to the master branch of the GitHub repo that was created for you by GitHub Classroom.  A good way to check whether your files are safely submitted is to look at the master branch your assignment repo on the github.com website (i.e. https://github.com/osu-cs493-sp22/assignment-4-YourGitHubUsername/). If your changes show up there, you can consider your files submitted.
 
 ## Grading criteria
 
