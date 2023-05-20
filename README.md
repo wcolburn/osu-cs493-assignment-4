@@ -17,13 +17,13 @@ Your first task for the assignment is to modify the `POST /photos` endpoint to s
 
 ## 2. Store uploaded photo data in GridFS
 
-Once your API successfully accepts image file uploads to the `POST /photos` endpoint, you should modify the API to store those image files in GridFS in the MongoDB database that's already powering the API.  Photo metadata corresponding the image files (i.e. `businessId` and `caption`) should be stored alongside the files themselves.
+Once your API successfully accepts image file uploads to the `POST /photos` endpoint, you should modify the API to store those image files in GridFS in the MongoDB database or a `BLOB` in the MySQL database that's already powering the API.  Photo metadata corresponding the image files (i.e. `businessId` and `caption`) should be stored alongside the files themselves.
 
-Once your API is storing photo data in GridFS, it should no longer use the `photos` MongoDB collection in which it currently stores photo metadata.  In other words, all data related to the `photos` collection should be stored in GridFS.  This will require you to update other API endpoints to work with the data stored in GridFS, including:
+Once your API is storing photo data in GridFS or MySQL `BLOB`, it should no longer use the `photos` MongoDB collection in which it currently stores photo metadata.  In other words, all data related to the `photos` collection should be stored in GridFS or the MySQL table with the `BLOB`s.  This will require you to update other API endpoints to work with the image data stored in the database, including:
   * `GET /businesses/{id}`
   * `GET /photos/{id}`
 
-Once a photo is saved in GridFS, you should make it available for download via a URL with the following format, where `{id}` represents the ID of the photo and the file extension (`.jpg` or `.png`) is based on the format of the uploaded image:
+Once a photo is saved in the database, you should make it available for download via a URL with the following format, where `{id}` represents the ID of the photo and the file extension (`.jpg` or `.png`) is based on the format of the uploaded image:
 ```
 /media/photos/{id}.jpg
 ```
@@ -79,10 +79,10 @@ This assignment is worth 100 total points, broken down as follows:
 
   * 20 points: API supports image uploads
 
-  * 20 points: Uploaded images are stored in GridFS
+  * 20 points: Uploaded images are stored in GridFS or MySQL `BLOB`s
 
   * 20 points: API uses an offline process powered by RabbitMQ to generate thumbnail images
 
-  * 20 points: All thumbnail images are correctly stored in GridFS and "linked" to their corresponding original photo in the datavase
+  * 20 points: All thumbnail images are correctly stored in GridFS or MySQL `BLOB`s and "linked" to their corresponding original photo in the database
 
   * 20 points: All photos and thumbnails are available for download using the URL formats described above
