@@ -186,8 +186,8 @@ In order to receive a grade, the following needs to work:
 5. In that shell, run `sh ./runtests.sh`.
 
 If you have your own cURL tests, you can put them in `runtests.sh`. If
-you are using the supplied Postman tests, put this in your
-`runtests.sh`:
+you are using Postman tests (not supplied here), put this in your
+`runtests.sh`, replacing filenames as appropriate:
 
 ```
 cd tests
