@@ -173,17 +173,26 @@ the RabbitMQ daemon and the MongoDB server need to be run within Docker
 containers.  The API server and RabbitMQ consumer(s) can run either in
 Docker or directly on your host machine.
 
+## Submission
+
+Make sure your completed files are committed and pushed by the
+assignment's deadline to the main branch of your GitHub repo. Check your
+repo to make sure your files are submitted there.
+
+**Add your `.env` file as a comment to your submission.** If you're not
+using a `.env` file, you need to tell me which environment variables to
+set.
+
 ## Grading criteria
 
 In order to receive a grade, the following needs to work:
 
-1. Open a new shell, change to the project directory, and export
-   necessary environment variables.
-2. In that shell, run `docker compose up`.
-3. Wait for the app to come up.
-4. Open another shell, change to the project directory, and export
-   necessary environment variables.
-5. In that shell, run `sh ./runtests.sh`.
+1. Open a new shell, change to the project directory,
+2. Copy the `.env` file there.
+3. In that shell, run `docker compose up`.
+4. Wait for the app to come up.
+5. Open another shell and change to the project directory.
+6. In that shell, run `sh ./runtests.sh`.
 
 If you have your own cURL tests, you can put them in `runtests.sh`. If
 you are using Postman tests (not supplied here), put this in your
