@@ -4,7 +4,7 @@
 
 const { Router } = require('express')
 const multer = require('multer');
-const upload = multer({ dest: './../uploads/' });
+const upload = multer({ dest: './uploads/' });
 
 const { validateAgainstSchema } = require('../lib/validation')
 const {

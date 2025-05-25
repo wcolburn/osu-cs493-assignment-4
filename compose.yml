@@ -4,7 +4,7 @@ services:
     volumes:
       - .:/usr/src/app  # Mount current directory into container
     command: npm run dev  # Or nodemon, ts-node-dev, etc.
-    
+
   db:
     image: mongo
     environment:
@@ -29,6 +29,8 @@ services:
 
   api:
     build: .
+    volumes:
+    - .:/usr/src/app
     ports:
       - 8000:8000
     environment:
@@ -40,3 +42,4 @@ services:
       - db
       - db-init
     restart: on-failure
+    command: npm run dev

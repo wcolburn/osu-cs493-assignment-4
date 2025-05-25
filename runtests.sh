@@ -8,6 +8,12 @@ status() {
 }
 
 
-status 'GET businesses/:id succeeds'
-curl -H "$auth" http://localhost:$PORT/businesses/68326ec2bf093aad19bd4f9c
+status 'POST photos succeeds'
+curl -X POST http://localhost:$PORT/photos \
+  -F "file=@test.txt" \
+  -F 'businessId=1' \
+  -F 'caption=Ice crem'
 
+
+# status 'GET businesses/:id succeeds'
+# curl -H "$auth" http://localhost:$PORT/businesses/68326ec2bf093aad19bd4f9c
