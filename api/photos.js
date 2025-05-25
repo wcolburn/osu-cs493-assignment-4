@@ -4,12 +4,21 @@
 
 const { Router } = require('express')
 const multer = require('multer');
-const upload = multer({ dest: './uploads/' });
+
+// Verify upload file type
+const filter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({ dest: './uploads/', fileFilter: filter });
 
 const { validateAgainstSchema } = require('../lib/validation')
 const {
   PhotoSchema,
-  insertNewPhoto,
   getPhotoById
 } = require('../models/photo')
 
@@ -21,15 +30,15 @@ const router = Router()
 router.post('/', upload.single('file'), async (req, res) => {
   if (validateAgainstSchema(req.body, PhotoSchema)) {
     try {
-      // const id = await insertNewPhoto(req.body)
-      // res.status(201).send({
-      //   id: id,
-      //   links: {
-      //     photo: `/photos/${id}`,
-      //     business: `/businesses/${req.body.businessId}`
-      //   }
-      // })
+
+      // If the filter refuses to upload the file due to an incorrect exension, this makes sure to send status 400
+      if (!req.file) {
+        return res.status(400).send({ error: 'No file uploaded. Make sure it is of type jpeg or png.' });
+      }
+
+      // Otherwise, the file uploaded successfully!
       res.status(201).send({"success": "Data uploaded successfully"})
+
     } catch (err) {
       console.error(err)
       res.status(500).send({
