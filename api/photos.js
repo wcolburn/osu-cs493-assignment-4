@@ -3,6 +3,8 @@
  */
 
 const { Router } = require('express')
+const multer = require('multer');
+const upload = multer({ dest: './../uploads/' });
 
 const { validateAgainstSchema } = require('../lib/validation')
 const {
@@ -16,17 +18,18 @@ const router = Router()
 /*
  * POST /photos - Route to create a new photo.
  */
-router.post('/', async (req, res) => {
+router.post('/', upload.single('file'), async (req, res) => {
   if (validateAgainstSchema(req.body, PhotoSchema)) {
     try {
-      const id = await insertNewPhoto(req.body)
-      res.status(201).send({
-        id: id,
-        links: {
-          photo: `/photos/${id}`,
-          business: `/businesses/${req.body.businessId}`
-        }
-      })
+      // const id = await insertNewPhoto(req.body)
+      // res.status(201).send({
+      //   id: id,
+      //   links: {
+      //     photo: `/photos/${id}`,
+      //     business: `/businesses/${req.body.businessId}`
+      //   }
+      // })
+      res.status(201).send({"success": "Data uploaded successfully"})
     } catch (err) {
       console.error(err)
       res.status(500).send({

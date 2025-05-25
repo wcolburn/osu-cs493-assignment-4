@@ -1,4 +1,10 @@
 services:
+  app:
+    build: .
+    volumes:
+      - .:/usr/src/app  # Mount current directory into container
+    command: npm run dev  # Or nodemon, ts-node-dev, etc.
+    
   db:
     image: mongo
     environment:
