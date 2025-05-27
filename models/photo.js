@@ -49,3 +49,17 @@ async function getPhotoById(id) {
   }
 }
 exports.getPhotoById = getPhotoById
+
+async function getPhotoByName(file_name) {
+  // Get the file from the db
+  const db = getDbReference()
+  const file = await db.collection('uploads.files')
+      .findOne({ filename: file_name });
+
+  if (!file) {
+    return null;
+  } else {
+    return file;
+  }
+}
+exports.getPhotoById = getPhotoById

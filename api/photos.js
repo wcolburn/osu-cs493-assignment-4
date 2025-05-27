@@ -34,7 +34,7 @@ const upload = multer({ storage, fileFilter: filter });
 const { validateAgainstSchema } = require('../lib/validation')
 const {
   PhotoSchema,
-  getPhotoById
+  getPhotoByName,
 } = require('../models/photo')
 
 const router = Router()
@@ -68,16 +68,27 @@ router.post('/', upload.single('file'), async (req, res) => {
 })
 
 /*
- * GET /photos/{id} - Route to fetch info about a specific photo.
+ * GET /photos/{filename} - Route to fetch info about a specific photo.
  */
-router.get('/:id', async (req, res, next) => {
+router.get('/:filename', async (req, res, next) => {
   try {
-    const photo = await getPhotoById(req.params.id)
-    if (photo) {
-      res.status(200).send(photo)
-    } else {
-      next()
+    const photo = await getPhotoByName(req.params.filename)
+    if (!photo) {
+      return res.status(404).send('Not found');
     }
+
+    // Create stream
+    const download_stream = gfs_bucket.
+        openDownloadStreamByName(req.params.filename);
+    download_stream.on('error', err => {
+        res.status(400).send(`Error: ${err}`);
+    });
+
+    // Send the res
+    res.status(200)
+    res.type(file.contentType)
+    download_stream.pipe(res);
+
   } catch (err) {
     console.error(err)
     res.status(500).send({
