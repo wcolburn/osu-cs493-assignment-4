@@ -62,4 +62,4 @@ async function getPhotoByName(file_name) {
     return file;
   }
 }
-exports.getPhotoById = getPhotoById
+exports.getPhotoByName = getPhotoByName

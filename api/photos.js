@@ -5,6 +5,7 @@
 const { Router } = require('express')
 const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
+const { getMongoUrl, getGfsBucket } = require('../lib/mongo')
 
 // Verify upload file type
 const filter = (req, file, cb) => {
@@ -16,7 +17,7 @@ const filter = (req, file, cb) => {
 };
 
 const storage = new GridFsStorage({
-    url: mongoURL,   // Same as the Mongo connect URL you use
+    url: getMongoUrl(),   // Same as the Mongo connect URL you use
     file: (req, file) => {
         return {
             filename: file.originalname,
@@ -78,6 +79,7 @@ router.get('/:filename', async (req, res, next) => {
     }
 
     // Create stream
+    const gfs_bucket = getGfsBucket()
     const download_stream = gfs_bucket.
         openDownloadStreamByName(req.params.filename);
     download_stream.on('error', err => {
