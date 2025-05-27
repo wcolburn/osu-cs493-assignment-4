@@ -4,6 +4,7 @@
 
 const { Router } = require('express')
 const multer = require('multer');
+const { GridFsStorage } = require('multer-gridfs-storage');
 
 // Verify upload file type
 const filter = (req, file, cb) => {
