@@ -88,7 +88,7 @@ router.get('/:filename', async (req, res, next) => {
 
     // Send the res
     res.status(200)
-    res.type(file.contentType)
+    res.type(photo.contentType)
     download_stream.pipe(res);
 
   } catch (err) {
