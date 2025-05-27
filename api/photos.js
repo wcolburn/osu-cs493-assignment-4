@@ -15,7 +15,21 @@ const filter = (req, file, cb) => {
   }
 };
 
-const upload = multer({ dest: './uploads/', fileFilter: filter });
+const storage = new GridFsStorage({
+    url: mongoURL,   // Same as the Mongo connect URL you use
+    file: (req, file) => {
+        return {
+            filename: file.originalname,
+            bucketName: 'uploads',
+            metaData: {
+              "businessId": req.body.businessId,
+              "caption": req.body.caption
+            }
+        };
+    },
+});
+
+const upload = multer({ storage, fileFilter: filter });
 
 const { validateAgainstSchema } = require('../lib/validation')
 const {
