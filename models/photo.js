@@ -37,15 +37,24 @@ exports.insertNewPhoto = insertNewPhoto
  * will resolve to null.
  */
 async function getPhotoById(id) {
+  
   const db = getDbReference()
-  const collection = db.collection('photos')
+
   if (!ObjectId.isValid(id)) {
     return null
   } else {
-    const results = await collection
-      .find({ _id: new ObjectId(id) })
-      .toArray()
-    return results[0]
+
+    const photo_id = new ObjectId(id);
+
+    const file = await db.collection('uploads.files')
+    .findOne({ _id: photo_id });
+
+    if (!file) {
+      return null;
+    } else {
+      return file;
+    }
+
   }
 }
 exports.getPhotoById = getPhotoById
@@ -59,6 +68,7 @@ async function getPhotoByName(file_name) {
   if (!file) {
     return null;
   } else {
+    console.log(file)
     return file;
   }
 }

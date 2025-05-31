@@ -36,6 +36,7 @@ const { validateAgainstSchema } = require('../lib/validation')
 const {
   PhotoSchema,
   getPhotoByName,
+  getPhotoById,
 } = require('../models/photo')
 
 const router = Router()
@@ -53,7 +54,7 @@ router.post('/', upload.single('file'), async (req, res) => {
       }
 
       // Otherwise, the file uploaded successfully!
-      res.status(201).send({"success": "Data uploaded successfully"})
+      res.status(201).send({"id": req.file.id})
 
     } catch (err) {
       console.error(err)
@@ -71,9 +72,10 @@ router.post('/', upload.single('file'), async (req, res) => {
 /*
  * GET /photos/{filename} - Route to fetch info about a specific photo.
  */
-router.get('/:filename', async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
-    const photo = await getPhotoByName(req.params.filename)
+    // const photo = await getPhotoByName(req.params.id)
+    const photo = await getPhotoById(req.params.id)
     if (!photo) {
       return res.status(404).send('Not found');
     }
@@ -81,7 +83,7 @@ router.get('/:filename', async (req, res, next) => {
     // Create stream
     const gfs_bucket = getGfsBucket()
     const download_stream = gfs_bucket.
-        openDownloadStreamByName(req.params.filename);
+        openDownloadStream(photo._id);
     download_stream.on('error', err => {
         res.status(400).send(`Error: ${err}`);
     });
