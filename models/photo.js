@@ -16,6 +16,12 @@ const PhotoSchema = {
 }
 exports.PhotoSchema = PhotoSchema
 
+const mimeType = {
+  "image/png": ".png",
+  "image/jpg": ".jpg",
+}
+exports.mimeType = mimeType
+
 /*
  * Executes a DB query to insert a new photo into the database.  Returns
  * a Promise that resolves to the ID of the newly-created photo entry.

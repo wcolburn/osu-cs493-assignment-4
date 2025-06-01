@@ -10,7 +10,9 @@ const router = Router()
 router.get('/photos/:id', async (req, res, next) => {
   try {
 
-    const photo = await getPhotoById(req.params.id)
+    id = req.params.id.split(".")[0]
+
+    const photo = await getPhotoById(id)
     if (!photo) {
       return res.status(404).send('Not found');
     }

@@ -38,6 +38,7 @@ const {
   getPhotoByName,
   getPhotoById,
   setMetadata,
+  mimeType,
 } = require('../models/photo')
 
 const router = Router()
@@ -92,7 +93,7 @@ router.get('/:id', async (req, res, next) => {
       "_id": photo._id,
       "businessId": photo.metadata.businessId,
       "caption": photo.metadata.caption,
-      "download": "/media/photos/" + photo._id
+      "download": "/media/photos/" + photo._id + mimeType[photo.contentType]
     })
 
   } catch (err) {
