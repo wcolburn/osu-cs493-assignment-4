@@ -21,7 +21,7 @@ status() {
 #   -F 'caption=Fried rice'
 
 status 'GET photo/:id succeeds'
-curl http://localhost:$PORT/photos/683b391caeb81a9e1ef82a2e
+curl http://localhost:$PORT/photos/683bb1ecda6c291d5e6296d9
 
 # status 'GET businesses/:id succeeds'
 # curl -H "$auth" http://localhost:$PORT/businesses/68326ec2bf093aad19bd4f9c

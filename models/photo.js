@@ -37,7 +37,7 @@ exports.insertNewPhoto = insertNewPhoto
  * will resolve to null.
  */
 async function getPhotoById(id) {
-  
+
   const db = getDbReference()
 
   if (!ObjectId.isValid(id)) {
@@ -73,3 +73,17 @@ async function getPhotoByName(file_name) {
   }
 }
 exports.getPhotoByName = getPhotoByName
+
+async function setMetadata(businessId, caption, photo_id) {
+  const db = getDbReference()
+  await db.collection('uploads.files').updateOne(
+    { _id: photo_id },
+    { $set: {
+      metadata: {
+        businessId: businessId,
+        caption: caption
+      }
+    }}
+  );
+}
+exports.setMetadata = setMetadata

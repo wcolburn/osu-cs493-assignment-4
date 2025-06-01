@@ -22,7 +22,7 @@ const storage = new GridFsStorage({
         return {
             filename: file.originalname,
             bucketName: 'uploads',
-            metaData: {
+            metadata: {
               "businessId": req.body.businessId,
               "caption": req.body.caption
             }
@@ -37,6 +37,7 @@ const {
   PhotoSchema,
   getPhotoByName,
   getPhotoById,
+  setMetadata,
 } = require('../models/photo')
 
 const router = Router()
@@ -45,6 +46,7 @@ const router = Router()
  * POST /photos - Route to create a new photo.
  */
 router.post('/', upload.single('file'), async (req, res) => {
+
   if (validateAgainstSchema(req.body, PhotoSchema)) {
     try {
 
@@ -52,6 +54,8 @@ router.post('/', upload.single('file'), async (req, res) => {
       if (!req.file) {
         return res.status(400).send({ error: 'No file uploaded. Make sure it is of type jpeg or png.' });
       }
+
+      setMetadata(req.body.businessId, req.body.caption, req.file.id)
 
       // Otherwise, the file uploaded successfully!
       res.status(201).send({"id": req.file.id})
@@ -80,18 +84,16 @@ router.get('/:id', async (req, res, next) => {
       return res.status(404).send('Not found');
     }
 
-    // Create stream
-    const gfs_bucket = getGfsBucket()
-    const download_stream = gfs_bucket.
-        openDownloadStream(photo._id);
-    download_stream.on('error', err => {
-        res.status(400).send(`Error: ${err}`);
-    });
+    console.log(photo)
 
     // Send the res
     res.status(200)
-    res.type(photo.contentType)
-    download_stream.pipe(res);
+    res.send({
+      "_id": photo._id,
+      "businessId": photo.metadata.businessId,
+      "caption": photo.metadata.caption,
+      "download": "/media/photos/" + photo._id
+    })
 
   } catch (err) {
     console.error(err)
