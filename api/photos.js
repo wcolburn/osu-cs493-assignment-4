@@ -39,6 +39,7 @@ const {
   getPhotoById,
   setMetadata,
   mimeType,
+  generateThumbnail,
 } = require('../models/photo')
 
 const router = Router()
@@ -57,6 +58,8 @@ router.post('/', upload.single('file'), async (req, res) => {
       }
 
       setMetadata(req.body.businessId, req.body.caption, req.file.id)
+
+      generateThumbnail()
 
       // Otherwise, the file uploaded successfully!
       res.status(201).send({"id": req.file.id})

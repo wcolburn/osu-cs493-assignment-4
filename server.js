@@ -3,6 +3,7 @@ const morgan = require('morgan')
 
 const api = require('./api')
 const { connectToDb } = require('./lib/mongo')
+const { connectToRabbitMq } = require('./lib/rabbitmq')
 
 const app = express()
 const port = process.env.PORT || 8000
@@ -33,3 +34,5 @@ connectToDb(function () {
     console.log("== Server is running on port", port)
   })
 })
+
+connectToRabbitMq()

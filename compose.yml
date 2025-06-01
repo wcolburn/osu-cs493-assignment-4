@@ -27,6 +27,12 @@ services:
     restart: on-failure
     command: npm run initdb
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
   api:
     build: .
     volumes:
@@ -41,5 +47,6 @@ services:
     depends_on:
       - db
       - db-init
+      - rabbitmq
     restart: on-failure
     command: npm run dev

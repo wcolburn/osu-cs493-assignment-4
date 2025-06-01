@@ -5,6 +5,7 @@
 const { ObjectId } = require('mongodb')
 
 const { getDbReference } = require('../lib/mongo')
+const { getChannel } = require('../lib/rabbitmq')
 const { extractValidFields } = require('../lib/validation')
 
 /*
@@ -93,3 +94,8 @@ async function setMetadata(businessId, caption, photo_id) {
   );
 }
 exports.setMetadata = setMetadata
+
+async function generateThumbnail() {
+  const channel = getChannel()
+}
+exports.generateThumbnail = generateThumbnail
