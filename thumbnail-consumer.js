@@ -15,6 +15,7 @@ async function startConsumer() {
             if (msg) {
                 // msg.content Buffer converted to String
                 console.log("Photo id:" + msg.content.toString());
+                
             }
 
             // Tell RabbitMQ it's OK to remove this message from the queue

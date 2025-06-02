@@ -7,6 +7,7 @@ const { ObjectId } = require('mongodb')
 const { getDbReference } = require('../lib/mongo')
 const { getChannel } = require('../lib/rabbitmq')
 const { extractValidFields } = require('../lib/validation')
+const { getGfsBucket } = require('../lib/mongo')
 
 /*
  * Schema describing required/optional fields of a photo object.
@@ -95,6 +96,7 @@ async function setMetadata(businessId, caption, photo_id) {
 }
 exports.setMetadata = setMetadata
 
+
 async function generateThumbnail(photo_id) {
   const channel = getChannel()
   console.log("Generating thumbnail...")
@@ -103,3 +105,16 @@ async function generateThumbnail(photo_id) {
   channel.sendToQueue('thumbnail', Buffer.from(photo_id.toString()))
 }
 exports.generateThumbnail = generateThumbnail
+
+
+async function createPhotoDownloadStream(photo) {
+      // Create stream
+      const gfs_bucket = getGfsBucket()
+      const download_stream = gfs_bucket.
+          openDownloadStream(photo._id);
+      download_stream.on('error', err => {
+          res.status(400).send(`Error: ${err}`);
+      });
+    return download_stream;
+}
+exports.createPhotoDownloadStream = createPhotoDownloadStream

@@ -3,6 +3,7 @@ const { getGfsBucket } = require('../lib/mongo')
 
 const {
   getPhotoById,
+  createPhotoDownloadStream,
 } = require('../models/photo')
 
 const router = Router()
@@ -18,12 +19,7 @@ router.get('/photos/:id', async (req, res, next) => {
     }
 
     // Create stream
-    const gfs_bucket = getGfsBucket()
-    const download_stream = gfs_bucket.
-        openDownloadStream(photo._id);
-    download_stream.on('error', err => {
-        res.status(400).send(`Error: ${err}`);
-    });
+    const download_stream = await createPhotoDownloadStream(photo);
 
     // Send the res
     res.status(200)
