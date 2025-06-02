@@ -54,7 +54,7 @@ async function startConsumer() {
 
                     const image = await Jimp.read(buffer);
 
-                    // image.resize(100, 100);
+                    image.resize(100, 100);
 
                     const image_buffer = await image.getBufferAsync(Jimp.MIME_JPEG);
 

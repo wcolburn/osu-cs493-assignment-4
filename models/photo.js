@@ -4,7 +4,7 @@
 
 const { ObjectId } = require('mongodb')
 
-const { getDbReference } = require('../lib/mongo')
+const { getDbReference, getThumbsGfsBucket } = require('../lib/mongo')
 const { getChannel } = require('../lib/rabbitmq')
 const { extractValidFields } = require('../lib/validation')
 const { getGfsBucket } = require('../lib/mongo')
@@ -67,6 +67,29 @@ async function getPhotoById(id) {
 }
 exports.getPhotoById = getPhotoById
 
+async function getThumbnailById(id) {
+  const db = getDbReference()
+
+  if (!ObjectId.isValid(id)) {
+    return null
+  } else {
+
+    const thumb_id = new ObjectId(id);
+
+    const file = await db.collection('thumbs.files')
+    .findOne({ _id: thumb_id });
+
+    if (!file) {
+      return null;
+    } else {
+      return file;
+    }
+
+  }
+
+}
+exports.getThumbnailById = getThumbnailById
+
 async function getPhotoByName(file_name) {
   // Get the file from the db
   const db = getDbReference()
@@ -118,6 +141,18 @@ async function createPhotoDownloadStream(photo_id) {
     return download_stream;
 }
 exports.createPhotoDownloadStream = createPhotoDownloadStream
+
+async function createThumbnailDownloadStream(photo_id) {
+      // Create stream
+      const gfs_bucket = getThumbsGfsBucket()
+      const download_stream = gfs_bucket.
+          openDownloadStream(photo_id);
+      download_stream.on('error', err => {
+          res.status(400).send(`Error: ${err}`);
+      });
+    return download_stream;
+}
+exports.createThumbnailDownloadStream = createThumbnailDownloadStream
 
 async function addThumbnailToMetadata(photo_id, thumb_id) {
   console.log("Gonna add the thumbnail!")
