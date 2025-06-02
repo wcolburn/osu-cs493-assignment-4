@@ -96,7 +96,8 @@ router.get('/:id', async (req, res, next) => {
       "_id": photo._id,
       "businessId": photo.metadata.businessId,
       "caption": photo.metadata.caption,
-      "download": "/media/photos/" + photo._id + mimeType[photo.contentType]
+      "download": "/media/photos/" + photo._id + mimeType[photo.contentType],
+      "thumbnail": "/media/thumbs/" + photo.metadata.thumbId + ".jpg"
     })
 
   } catch (err) {
