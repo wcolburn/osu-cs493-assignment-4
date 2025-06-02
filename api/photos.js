@@ -59,7 +59,7 @@ router.post('/', upload.single('file'), async (req, res) => {
 
       setMetadata(req.body.businessId, req.body.caption, req.file.id)
 
-      generateThumbnail(req.file.id)
+      await generateThumbnail(req.file.id)
 
       // Otherwise, the file uploaded successfully!
       res.status(201).send({"id": req.file.id})

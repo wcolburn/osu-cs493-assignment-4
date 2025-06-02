@@ -32,6 +32,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   api:
     build: .
@@ -45,8 +50,11 @@ services:
       MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_DB_NAME: ${MONGO_DB_NAME}
     depends_on:
-      - db
-      - db-init
-      - rabbitmq
+      db:
+        condition: service_started
+      db-init:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     restart: on-failure
     command: npm run dev

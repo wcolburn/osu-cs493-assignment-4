@@ -97,7 +97,9 @@ exports.setMetadata = setMetadata
 
 async function generateThumbnail(photo_id) {
   const channel = getChannel()
+  console.log("Generating thumbnail...")
   await channel.assertQueue('thumbnail');
-  channel.sendToQueue('thumbnail', Buffer.from(photo_id))
+  console.log("Queue established!")
+  channel.sendToQueue('thumbnail', Buffer.from(photo_id.toString()))
 }
 exports.generateThumbnail = generateThumbnail
