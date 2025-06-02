@@ -105,6 +105,19 @@ async function getPhotoByName(file_name) {
 }
 exports.getPhotoByName = getPhotoByName
 
+async function getPhotosByBusinessId(business_id) {
+  const db = getDbReference()
+  const files = await db.collection('uploads.files')
+      .find({ "metadata.businessId": business_id }).toArray();
+
+  if (!files) {
+    return null;
+  } else {
+    return files;
+  }
+}
+exports.getPhotosByBusinessId = getPhotosByBusinessId
+
 async function setMetadata(businessId, caption, photo_id) {
   const db = getDbReference()
   await db.collection('uploads.files').updateOne(

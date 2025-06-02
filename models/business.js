@@ -6,6 +6,7 @@ const { ObjectId } = require('mongodb')
 
 const { getDbReference } = require('../lib/mongo')
 const { extractValidFields } = require('../lib/validation')
+const { getPhotosByBusinessId } = require('./photo')
 
 /*
  * Schema describing required/optional fields of a business object.
@@ -84,16 +85,19 @@ async function getBusinessById(id) {
   if (!ObjectId.isValid(id)) {
     return null
   } else {
-    const results = await collection.aggregate([
-      { $match: { _id: new ObjectId(id) } },
-      { $lookup: {
-          from: "uploads.files",
-          localField: "_id",
-          foreignField: "metadata.businessId",
-          as: "photos"
-      }}
-    ]).toArray()
-    return results[0]
+    // const results = await collection.aggregate([
+    //   { $match: { _id: new ObjectId(id) } },
+    //   { $lookup: {
+    //       from: "uploads.files",
+    //       localField: "_id",
+    //       foreignField: "metadata.businessId",
+    //       as: "photos"
+    //   }}
+    // ]).toArray()
+    const file = await collection
+      .findOne({ "_id": new ObjectId(id) });
+    file.photos = await getPhotosByBusinessId(id);
+    return file
   }
 }
 exports.getBusinessById = getBusinessById
