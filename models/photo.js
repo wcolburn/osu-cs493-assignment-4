@@ -118,3 +118,15 @@ async function createPhotoDownloadStream(photo_id) {
     return download_stream;
 }
 exports.createPhotoDownloadStream = createPhotoDownloadStream
+
+async function addThumbnailToMetadata(photo_id, thumb_id) {
+  console.log("Gonna add the thumbnail!")
+  const db = getDbReference()
+  await db.collection('uploads.files').updateOne(
+    { _id: photo_id },
+    { $set: {
+      'metadata.thumbId': thumb_id
+    }}
+  );
+}
+exports.addThumbnailToMetadata = addThumbnailToMetadata

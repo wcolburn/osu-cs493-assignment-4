@@ -1,8 +1,8 @@
 const amqp = require('amqplib');
 const rabbitmqHost = process.env.RABBITMQ_HOST || 'rabbitmq';
 const rabbitmqUrl = `amqp://${rabbitmqHost}`;
-const { Jimp } = require("jimp");
-const { getPhotoById, createPhotoDownloadStream } = require('./models/photo');
+const Jimp = require("jimp");
+const { getPhotoById, createPhotoDownloadStream, addThumbnailToMetadata } = require('./models/photo');
 const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const { getMongoUrl, getThumbsGfsBucket } = require('./lib/mongo')
@@ -61,11 +61,13 @@ async function startConsumer() {
                     console.log("Buffer created!")
 
                     const bucket = getThumbsGfsBucket();
-                    const upload_stream = bucket.openUploadStream(photo._id);
+                    const upload_stream = bucket.openUploadStream(photo.filename);
                     upload_stream.end(image_buffer);
 
-                    upload_stream.on('finish', () => {
-                    console.log('Thumbnail uploaded successfully');
+
+                    upload_stream.on('finish', (thumb_file) => {
+                        console.log('Thumbnail uploaded successfully');
+                        addThumbnailToMetadata(photo._id, thumb_file._id)
                     });
 
                     upload_stream.on('error', (err) => {

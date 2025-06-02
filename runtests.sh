@@ -8,11 +8,11 @@ status() {
 }
 
 
-status 'POST photos succeeds'
-curl -X POST http://localhost:$PORT/photos \
-  -F "file=@test.png" \
-  -F 'businessId=683bb3c2e262e2b242506f30' \
-  -F 'caption=Ice crem'
+# status 'POST photos succeeds'
+# curl -X POST http://localhost:$PORT/photos \
+#   -F "file=@test.png" \
+#   -F 'businessId=683bb3c2e262e2b242506f30' \
+#   -F 'caption=Ice crem'
 
 # status 'POST photos fails with incorrect file type'
 # curl -X POST http://localhost:$PORT/photos \
@@ -21,7 +21,7 @@ curl -X POST http://localhost:$PORT/photos \
 #   -F 'caption=Fried rice'
 
 status 'GET photo/:id succeeds'
-curl http://localhost:$PORT/photos/683d127a0df33323089eabfe
+curl http://localhost:$PORT/photos/683dea78bb19ef9715d37ba0
 
-status 'GET businesses/:id succeeds'
-curl -H "$auth" http://localhost:$PORT/businesses/683d127a0df33323089eabfe
+# status 'GET businesses/:id succeeds'
+# curl -H "$auth" http://localhost:$PORT/businesses/683d127a0df33323089eabfe
