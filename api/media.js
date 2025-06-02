@@ -19,7 +19,7 @@ router.get('/photos/:id', async (req, res, next) => {
     }
 
     // Create stream
-    const download_stream = await createPhotoDownloadStream(photo);
+    const download_stream = await createPhotoDownloadStream(photo._id);
 
     // Send the res
     res.status(200)

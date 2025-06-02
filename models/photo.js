@@ -107,11 +107,11 @@ async function generateThumbnail(photo_id) {
 exports.generateThumbnail = generateThumbnail
 
 
-async function createPhotoDownloadStream(photo) {
+async function createPhotoDownloadStream(photo_id) {
       // Create stream
       const gfs_bucket = getGfsBucket()
       const download_stream = gfs_bucket.
-          openDownloadStream(photo._id);
+          openDownloadStream(photo_id);
       download_stream.on('error', err => {
           res.status(400).send(`Error: ${err}`);
       });
