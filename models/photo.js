@@ -95,7 +95,9 @@ async function setMetadata(businessId, caption, photo_id) {
 }
 exports.setMetadata = setMetadata
 
-async function generateThumbnail() {
+async function generateThumbnail(photo_id) {
   const channel = getChannel()
+  await channel.assertQueue('thumbnail');
+  channel.sendToQueue('thumbnail', Buffer.from(photo_id))
 }
 exports.generateThumbnail = generateThumbnail
